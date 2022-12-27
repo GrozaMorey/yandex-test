@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if request.user.is_authenticated %}
+    <li>
+
+        <form action=" http://127.0.0.1:8000/test/{{next}}/ " method="post">
+            {% csrf_token %}
+            <input type="hidden" name="questions" value="{{questions}}">
+            <input type="hidden" name="test_name" value="{{test_name}}">
+            <input type="hidden" name="end" value="{% if score >= 0 %}True{% else %}{{score}}{% endif %}">
+
+            <h2>{{questions.text}}</h2>
+            {% for i in questions.answers.get_queryset %}
+                <input type="checkbox" id="{{forloop.counter}}" name = "{{i.text}}" {% if check %}checked{% endif %}>
+            <label for="{{forloop.counter}}">{{i.text}}</label>
+            {% endfor %}
+
+            <button type="submit" name="questions_id" value="{{questions.id}}">dalee</button>
+
+        </form>
+    </li>
+{% endif %}
+</body>
+</html>
