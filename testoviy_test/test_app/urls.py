@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from .views import *
@@ -6,7 +7,8 @@ urlpatterns = [
     path("register/", RegisterUser.as_view()),
     path("login/", LoginUser.as_view(), name="login"),
     path("logout/", logout_user),
-    path("test/<slug:slug>/<int:question>/", TestView.as_view()),
-    path("test/", tests),
-    path("result/<slug:slug>/", ResultView.as_view(), name="result")
-]
+    path("<slug:slug>/", login_required(DescView.as_view(), login_url='/login/')),
+    path("<slug:slug>/<int:question>/", login_required(TestView.as_view(), login_url='/login/')),
+    path("", login_required(tests, login_url='/login/')),
+    path("result/<slug:slug>/", login_required(ResultView.as_view(), login_url='/login/'), name="result")
+    ]

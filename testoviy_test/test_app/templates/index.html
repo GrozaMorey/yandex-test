@@ -1,14 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% for i in test %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <section class="min-h-screen body-font text-gray-600 ">
+    <div class="container mx-auto px-5 py-10 ">
+      <div class="-m-4 flex flex-wrap ">
+          {% for i in test %}
+        <div class="w-full p-4 md:w-1/2 lg:w-1/4 ">
+          <div class="mt-4 shadow-xl rounded-lg transition duration-300 delay-150 hover:delay-300">
+              <a class="relative block h-48 overflow-hidden rounded" href="/{{i.slug}}/">
+            <h3 class="title-font mb-1 text-xs tracking-widest text-gray-500 ml-6 mt-5">Тест</h3>
+            <h2 class="title-font text-lg font-medium text-gray-900 ml-6">{{i.title}}</h2>
+            <h3 class="title-font mb-1 text-xs tracking-widest text-gray-500 absolute bottom-0 right-0 h-8 w-34 m-4">Количество вопроов: {{i.questions.get_queryset|length}}</h3>
+                  </a>
+          </div>
+        </div>
+          {% endfor %}
+    </div>
+  </section>
     <li>
-        <h2><a href="http://127.0.0.1:8000/test/{{i.slug}}/1/">{{i.title}}</a>></h2>
-    </li>>
-    {% endfor %}
-</body>
-</html>
+        <h2><a href="/test/{{i.slug}}/">{{i.title}}</a></h2>
+    </li>
+
+{% endblock %}

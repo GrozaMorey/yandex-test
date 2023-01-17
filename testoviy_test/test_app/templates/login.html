@@ -1,14 +1,31 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
+
+    <div class="container w-80 py-64 mx-auto">
+    <div class="flex flex-col text-center mb-12 item-center">
+        {% if form.non_field_errors %}
+  <div class="text-blue-600">
+    {% for err in form.non_field_errors %}
+      <a class="text-sm text-red-800">{{ err }}</a>
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="mb-6">
+
+    <label for="id_username" class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Логин</label>
+    <input type="text" id="id_username" name="username" maxlength="150" required="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  </div>
+  <div class="mb-12">
+    <label for="id_password" class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Пароль</label>
+    <input type="password" id="id_password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+  </div>
+  <button type="submit" class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Войти</button>
+    </div>
+    </div>
+
 </form>
-</body>
-</html>
+
+{% endblock %}

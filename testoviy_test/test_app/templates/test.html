@@ -1,29 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 {% if request.user.is_authenticated %}
-    <li>
+<section class="text-gray-600 body-font" xmlns="http://www.w3.org/1999/html">
+<div class="container flex  justify-center px-2 py-28 mx-auto">
+<h3 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">{{questions.text}}?</h3>
+</div>
+<div class="container px-2 py-12 mx-auto " id="cont">
+<ul class="flex-2  justify-center gap-6  md:grid-cols-3 ">
+    <form action="/{{next}}/ " method="post" id="some-form">
+        {% csrf_token %}
+        <input type="hidden" name="questions" value="{{questions}}">
+        <input type="hidden" name="end" value="{% if score >= 0 %}True{% else %}{{score}}{% endif %}">
 
-        <form action=" http://127.0.0.1:8000/test/{{next}}/ " method="post">
-            {% csrf_token %}
-            <input type="hidden" name="questions" value="{{questions}}">
-            <input type="hidden" name="test_name" value="{{test_name}}">
-            <input type="hidden" name="end" value="{% if score >= 0 %}True{% else %}{{score}}{% endif %}">
-
-            <h2>{{questions.text}}</h2>
-            {% for i in questions.answers.get_queryset %}
-                <input type="checkbox" id="{{forloop.counter}}" name = "{{i.text}}" {% if check %}checked{% endif %}>
-            <label for="{{forloop.counter}}">{{i.text}}</label>
-            {% endfor %}
-
-            <button type="submit" name="questions_id" value="{{questions.id}}">dalee</button>
-
-        </form>
+    {% for i in questions.answers.get_queryset %}
+    <li class="py-2">
+        <input type="checkbox" id="{{forloop.counter}}" name = "{{i.text}}" {% if check %}checked{% endif %} class="hidden peer">
+        <label for="{{forloop.counter}}" class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <div class="block flex ">
+                <div class="flex w-full text-2xl font-semibold">{{i.text}}</div>
+            </div>
+        </label>
     </li>
+    {% endfor %}
+
+        <div class="items-center flex lg:w-1/2 w-1/2  flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 py-12">
+            <button type="submit" id="button"  name="questions_id" value="{{questions.id}}" class=" text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-700 rounded text-lg">Следующий вопрос</button>
+        </div>
+    </form>
+</ul>
+</div>
+<script>
+   const form = document.querySelector('#some-form')
+
+form.addEventListener('submit', (ev) => {
+  if (!checkInputs()) {
+    ev.preventDefault()
+    alert('Выбери что то брат')
+  }
+})
+
+function checkInputs() {
+  return document.querySelectorAll("input[type=checkbox]:checked").length > 0
+}
+</script>
+
+</section>
 {% endif %}
-</body>
-</html>
+{% endblock %}
